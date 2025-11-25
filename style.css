@@ -1,4 +1,3 @@
-/* Grundlegendes Design (Dark Mode) */
 body {
     background-color: #0f2b38; /* Dunkler Hintergrund */
     color: white;
@@ -12,7 +11,6 @@ header {
     margin-bottom: 40px;
 }
 
-/* Der Container für die Bücher */
 #content {
     display: flex;
     flex-wrap: wrap;
@@ -20,9 +18,8 @@ header {
     gap: 30px;
 }
 
-/* Die einzelne Buch-Karte */
 .book-card {
-    background-color: #163645; /* Etwas helleres Blau für die Karte */
+    background-color: #163645;
     width: 320px;
     border-radius: 15px;
     padding: 20px;
@@ -31,32 +28,28 @@ header {
     flex-direction: column;
 }
 
-/* Titel des Buches */
 .book-title {
     font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
-    height: 50px; /* Feste Höhe, damit alles gleich groß ist */
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Trennlinien */
 .divider {
-    border-bottom: 2px solid #5aaeb8; /* Türkise Linie */
+    border-bottom: 2px solid #5aaeb8;
     margin: 15px 0;
 }
 
-/* Bildbereich */
 .book-cover {
     text-align: center;
-    font-size: 50px; /* Nur falls wir Emojis nutzen, sonst img stylen */
+    font-size: 50px;
     margin: 10px 0;
 }
 
-/* Preis und Likes Zeile */
 .price-likes-row {
     display: flex;
     justify-content: space-between;
@@ -66,7 +59,7 @@ header {
 }
 
 .price {
-    color: #e65c5c; /* Rötlicher Preis */
+    color: #e65c5c;
     font-weight: bold;
 }
 
@@ -83,7 +76,6 @@ header {
     font-size: 1.5rem;
 }
 
-/* Tabelle für Autor, Jahr, Genre */
 .details-row {
     display: flex;
     justify-content: space-between;
@@ -91,7 +83,6 @@ header {
     font-size: 0.9rem;
 }
 
-/* Kommentarbereich */
 .comments-section {
     margin-top: 10px;
 }
@@ -101,10 +92,9 @@ header {
     margin-bottom: 10px;
 }
 
-/* Der Scroll-Bereich für die Kommentare! */
 .comments-scroll {
-    max-height: 120px; /* Maximale Höhe */
-    overflow-y: auto;  /* Scrollbar wenn es zu voll wird */
+    max-height: 120px;
+    overflow-y: auto;
     margin-bottom: 15px;
     font-size: 0.85rem;
     border: 1px solid #2c5364;
@@ -117,7 +107,6 @@ header {
     border-bottom: 1px solid #2c5364;
 }
 
-/* Eingabefelder */
 .input-section {
     display: flex;
     gap: 5px;
