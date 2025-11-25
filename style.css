@@ -1,122 +1,122 @@
 body {
-    background-color: #0f2b38; /* Dunkler Hintergrund */
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+  background-color: #256d8f;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 #content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
 }
 
 .book-card {
-    background-color: #163645;
-    width: 320px;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    display: flex;
-    flex-direction: column;
+  background-color: #163645;
+  width: 320px;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
 }
 
 .book-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 10px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .divider {
-    border-bottom: 2px solid #5aaeb8;
-    margin: 15px 0;
+  border-bottom: 2px solid #5aaeb8;
+  margin: 15px 0;
 }
 
 .book-cover {
-    text-align: center;
-    font-size: 50px;
-    margin: 10px 0;
+  text-align: center;
+  font-size: 50px;
+  margin: 10px 0;
 }
 
 .price-likes-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
 }
 
 .price {
-    color: #e65c5c;
-    font-weight: bold;
+  color: #e65c5c;
+  font-weight: bold;
 }
 
 .likes {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .heart-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
 }
 
 .details-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
 }
 
 .comments-section {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .comments-header {
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .comments-scroll {
-    max-height: 120px;
-    overflow-y: auto;
-    margin-bottom: 15px;
-    font-size: 0.85rem;
-    border: 1px solid #2c5364;
-    padding: 5px;
+  max-height: 120px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+  border: 1px solid #2c5364;
+  padding: 5px;
 }
 
 .single-comment {
-    margin-bottom: 8px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #2c5364;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #2c5364;
 }
 
 .input-section {
-    display: flex;
-    gap: 5px;
+  display: flex;
+  gap: 5px;
 }
 
 input {
-    background-color: #163645;
-    border: 1px solid #5aaeb8;
-    color: white;
-    padding: 5px;
-    border-radius: 4px;
-    width: 100%;
+  background-color: #163645;
+  border: 1px solid #5aaeb8;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  width: 100%;
 }
