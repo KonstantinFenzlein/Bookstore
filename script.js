@@ -298,7 +298,7 @@ function addComment(index) {
   let nameValue = inputName.value;
   let commentValue = inputComment.value;
 
-  // 3. Sicherheitscheck: Ist eines der Felder leer?
+  // 3. Check: Ist eines der Felder leer?
   if (nameValue.length === 0 || commentValue.length === 0) {
     alert("Bitte schreibe einen Namen und einen Kommentar!");
     return;
