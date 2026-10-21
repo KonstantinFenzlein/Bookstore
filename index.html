@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <title>Bookstore</title>
     <link
       rel="icon"
@@ -12,10 +13,14 @@
     <script src="script.js" defer></script>
   </head>
   <body onload="init()">
-    <header>
-      <h1>📚 Bookstore</h1>
+    <header class="hero">
+      <p class="hero-eyebrow">Deine kleine Buchhandlung</p>
+      <h1>Bookstore</h1>
+      <p class="hero-text">
+        Stöbere durch unsere Auswahl, vergib Likes und teile deine Meinung.
+      </p>
     </header>
 
-    <div id="content"></div>
+    <main id="content" class="book-grid"></main>
   </body>
 </html>
