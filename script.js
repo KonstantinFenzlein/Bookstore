@@ -193,89 +193,162 @@ let books = [
   },
 ];
 
+const STORAGE_KEY = "bookstore-books";
+
 function init() {
+  loadBooks();
   renderBooks();
+}
+
+// Gespeicherte Likes und Kommentare laden (falls vorhanden)
+function loadBooks() {
+  try {
+    let saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      books = JSON.parse(saved);
+    }
+  } catch (error) {
+    // Ohne Speicher (z. B. privater Modus) mit den Startdaten weitermachen
+  }
+}
+
+function saveBooks() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+  } catch (error) {
+    // Speichern nicht möglich, die Seite funktioniert trotzdem
+  }
+}
+
+// Benutzereingaben unschädlich machen, bevor sie per innerHTML eingefügt werden
+function escapeHTML(text) {
+  return String(text).replace(
+    /[&<>"']/g,
+    (char) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        char
+      ]
+  );
+}
+
+function formatPrice(price) {
+  return price.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 }
 
 function renderBooks() {
   let content = document.getElementById("content");
-  content.innerHTML = "";
+  let html = "";
 
   for (let i = 0; i < books.length; i++) {
-    let book = books[i];
+    html += getBookTemplate(books[i], i);
+  }
 
-    let heartIcon = book.liked ? "❤️" : "🤍";
+  content.innerHTML = html;
+}
 
-    let commentsHTML = "";
+// Nur eine Karte neu zeichnen und den Fokus danach wiederherstellen
+function renderBook(index, focusId, openComments) {
+  let card = document.getElementById(`book${index}`);
+  let wasOpen = card.querySelector(".comments").open;
+  card.outerHTML = getBookTemplate(books[index], index, openComments || wasOpen);
 
-    if (book.comments.length === 0) {
-      commentsHTML = "<p>Keine Kommentare. Sei der Erste!</p>";
-    } else {
-      for (let j = 0; j < book.comments.length; j++) {
-        let singleComment = book.comments[j];
-        commentsHTML += `
-                    <div class="single-comment">
-                        <strong>[${singleComment.name}]</strong>: ${singleComment.comment}
-                    </div>
-                `;
-      }
-    }
-
-    content.innerHTML += `
-            <div class="book-card">
-                <div class="book-title">${book.name}</div>
-                <div class="divider"></div>
-                
-                <div class="book-cover">
-                    📘 <!-- Hier könntest du <img src="${
-                      book.image
-                    }"> nutzen -->
-                    <span style="float:right; font-size: 1.5rem;">☆</span>
-                </div>
-                
-                <div class="divider"></div>
-
-                <div class="price-likes-row">
-                    <span class="price">${book.price.toFixed(2)} €</span>
-                    <div class="likes">
-                        <span>${book.likes}</span>
-                        <button class="heart-btn" onclick="toggleLike(${i})">${heartIcon}</button>
-                    </div>
-                </div>
-
-                <div class="details-row">
-                    <span>Author:</span>
-                    <span>${book.author}</span>
-                </div>
-                <div class="details-row">
-                    <span>Erscheinungsjahr:</span>
-                    <span>${book.publishedYear}</span>
-                </div>
-                <div class="details-row">
-                    <span>Genre:</span>
-                    <span>${book.genre}</span>
-                </div>
-
-                <div class="divider"></div>
-
-                <div class="comments-section">
-                    <div class="comments-header">Kommentare:</div>
-                    <div class="comments-scroll">
-                        ${commentsHTML} <!-- Hier fügen wir die gesammelten Kommentare ein -->
-                    </div>
-                </div>
-
-                <div class="input-section">
-                    <input type="text" placeholder="Name..." id="inputName${i}">
-                    <input type="text" placeholder="Kommentar..." id="inputComment${i}">
-                    <button onclick="addComment(${i})">✉️</button>
-                </div>
-            </div>
-        `;
+  if (focusId) {
+    document.getElementById(focusId).focus();
   }
 }
 
-// Testen des Herz-Buttons
+function getCommentsTemplate(book) {
+  if (book.comments.length === 0) {
+    return `<p class="comments-empty">Noch keine Kommentare. Sei der Erste!</p>`;
+  }
+
+  let commentsHTML = "";
+  for (let j = 0; j < book.comments.length; j++) {
+    let singleComment = book.comments[j];
+    commentsHTML += `
+      <li class="single-comment">
+        <span class="avatar" aria-hidden="true">${escapeHTML(singleComment.name.charAt(0).toUpperCase())}</span>
+        <div class="comment-bubble">
+          <strong>${escapeHTML(singleComment.name)}</strong>
+          <p>${escapeHTML(singleComment.comment)}</p>
+        </div>
+      </li>
+    `;
+  }
+  return `
+    <ul class="comments-scroll" tabindex="0" aria-label="Kommentare zu ${escapeHTML(book.name)}">
+      ${commentsHTML}
+    </ul>
+  `;
+}
+
+function getBookTemplate(book, i, openComments) {
+  let heartIcon = book.liked ? "❤️" : "🤍";
+  let title = escapeHTML(book.name);
+  let genre = escapeHTML(book.genre);
+
+  return `
+    <article class="book-card" id="book${i}" aria-labelledby="title${i}">
+      <div class="book-cover" data-genre="${genre}">
+        <span class="genre-chip">${genre}</span>
+        <span class="book-cover-icon" aria-hidden="true">📖</span>
+      </div>
+
+      <div class="book-body">
+        <div>
+          <h2 class="book-title" id="title${i}">${title}</h2>
+          <p class="book-author">von ${escapeHTML(book.author)}</p>
+        </div>
+
+        <div class="price-likes-row">
+          <span class="price">${formatPrice(book.price)}</span>
+          <button class="like-btn" id="likeBtn${i}" onclick="toggleLike(${i})" aria-pressed="${book.liked}">
+            <span class="like-icon" aria-hidden="true">${heartIcon}</span>
+            <span class="sr-only">Gefällt mir: ${title},</span>
+            ${book.likes.toLocaleString("de-DE")}
+            <span class="sr-only">Likes</span>
+          </button>
+        </div>
+
+        <dl class="details">
+          <div class="details-item">
+            <dt>Genre</dt>
+            <dd>${genre}</dd>
+          </div>
+          <div class="details-item">
+            <dt>Erschienen</dt>
+            <dd>${book.publishedYear}</dd>
+          </div>
+        </dl>
+
+        <details class="comments"${openComments ? " open" : ""}>
+          <summary>
+            <span>Kommentare<span class="comment-count">${book.comments.length}</span></span>
+          </summary>
+          ${getCommentsTemplate(book)}
+        </details>
+
+        <form class="comment-form" onsubmit="addComment(event, ${i})" novalidate>
+          <label class="sr-only" for="inputName${i}">Dein Name</label>
+          <input type="text" placeholder="Name" id="inputName${i}" autocomplete="name"
+            aria-describedby="error${i}">
+          <label class="sr-only" for="inputComment${i}">Dein Kommentar</label>
+          <input type="text" placeholder="Was denkst du?" id="inputComment${i}"
+            aria-describedby="error${i}">
+          <button type="submit" class="send-btn" aria-label="Kommentar senden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/>
+            </svg>
+          </button>
+          <p class="error" id="error${i}" aria-live="polite"></p>
+        </form>
+      </div>
+    </article>
+  `;
+}
+
+// Like setzen oder entfernen
 function toggleLike(index) {
   books[index].liked = !books[index].liked;
 
@@ -285,22 +358,31 @@ function toggleLike(index) {
     books[index].likes--;
   }
 
-  renderBooks();
+  saveBooks();
+  renderBook(index, `likeBtn${index}`);
 }
 
 //Kommentar hinzufügen
-function addComment(index) {
+function addComment(event, index) {
+  // Neuladen der Seite durch das Formular verhindern
+  event.preventDefault();
+
   // 1. Die Eingabefelder holen
   let inputName = document.getElementById(`inputName${index}`);
   let inputComment = document.getElementById(`inputComment${index}`);
+  let error = document.getElementById(`error${index}`);
 
-  // 2. Den Text aus den Feldern holen
-  let nameValue = inputName.value;
-  let commentValue = inputComment.value;
+  // 2. Den Text aus den Feldern holen (Leerzeichen am Rand entfernen)
+  let nameValue = inputName.value.trim();
+  let commentValue = inputComment.value.trim();
 
   // 3. Check: Ist eines der Felder leer?
+  inputName.setAttribute("aria-invalid", nameValue.length === 0);
+  inputComment.setAttribute("aria-invalid", commentValue.length === 0);
+
   if (nameValue.length === 0 || commentValue.length === 0) {
-    alert("Bitte schreibe einen Namen und einen Kommentar!");
+    error.textContent = "Bitte schreibe einen Namen und einen Kommentar!";
+    (nameValue.length === 0 ? inputName : inputComment).focus();
     return;
   }
 
@@ -313,5 +395,6 @@ function addComment(index) {
   // 5. Den neuen Kommentar in das Buch-Array einfügen
   books[index].comments.push(newComment);
 
-  renderBooks();
+  saveBooks();
+  renderBook(index, `inputName${index}`, true);
 }
